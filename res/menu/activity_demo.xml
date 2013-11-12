@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/validateAllFields"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:visible="true"
+        android:title="Set"/>
+	<item
+        android:id="@+id/saveForm"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:visible="true"
+        android:title="Save"/>
+	<item
+        android:id="@+id/viewSaved"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:visible="true"
+        android:title="SavedSMS"/>
+</menu>
