@@ -13,8 +13,10 @@ import android.app.ListActivity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.graphics.Color;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class SavedSMS extends Activity {
+	public static String phoneNumber="085646201002";
 	DB datasource;
 	ListView lv;
 	MyAdapter adapter;
@@ -57,11 +60,14 @@ public class SavedSMS extends Activity {
 		public MyAdapter(Context context, int resource, 
 				List<Sms> objects) {
 			super(context, resource,  objects);
-			myList = new ArrayList<Sms>();
+			myList = objects;
 			this.context = context;
 		}
 		public void setSelectedIndex(int selectedIndex) {
 			this.selectedIndex = selectedIndex;
+		}
+		public int getSelectedIndex(){
+			return selectedIndex;
 		}
 		public int getCount() {
 			return myList.size();
@@ -89,6 +95,9 @@ public class SavedSMS extends Activity {
 			vi = inflater.inflate(R.layout.list_item, null);
 			TextView tv = (TextView)vi.findViewById(R.id.lstContent);
 			Sms jj = myList.get(position);
+			if(position==getSelectedIndex()){
+				vi.setBackgroundColor(selectedColor);
+			}
 			tv.setText(jj.getValue());
 			return vi;
 		}
@@ -100,5 +109,16 @@ public class SavedSMS extends Activity {
 		getMenuInflater().inflate(R.menu.saved_sm, menu);
 		return true;
 	}
-
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case R.id.action_sendsms:
+			SmsManager smsManager = SmsManager.getDefault();
+			Sms message = adapter.getItem(adapter.getSelectedIndex());
+			smsManager.sendTextMessage(phoneNumber, null, message.getValue(), null, null);
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

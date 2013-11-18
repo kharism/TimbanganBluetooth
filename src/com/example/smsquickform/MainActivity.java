@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.smsquickform.model.Sms;
 import com.ngohung.form.HBaseFormActivity;
 import com.ngohung.form.el.HDatePickerElement;
 import com.ngohung.form.el.HElement;
@@ -47,6 +48,7 @@ public class MainActivity extends HBaseFormActivity {
 	private ArrayList<BluetoothDevice> devices;
 	private boolean exitOnDisconect = true;
 	private UUID mDeviceUUID;
+	private DB database;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,6 +56,7 @@ public class MainActivity extends HBaseFormActivity {
 		Log.i("HBaseFormActivity", "Demo started!!" );
 		Intent intent = getIntent();
 		readThreads = new ArrayList<Runnable>();
+		database = new DB(this);
 		Bundle b = intent.getExtras();
 		mDeviceUUID = UUID.fromString(b.getString(Homescreen.DEVICE_UUID));
 		devices = b.getParcelableArrayList(Homescreen.DEVICES_LISTS);
@@ -106,9 +109,13 @@ public class MainActivity extends HBaseFormActivity {
 		 			this.displayFormErrorMsg("Success", "There are no errors in the form");*/
 		 			
 		 	return true;
-		 	
+		 	case R.id.saveForm:
+		 		Sms j = new Sms();
+		 		String data = ((EditText)this.findViewByKey("NIK_ibu")).getText()+"#"+((EditText)this.findViewByKey("nama_ibu")).getText()+"#"+((EditText)this.findViewByKey("NO_KK")).getText();
+		 		j.setValue(data);
+		 		database.saveSms(j);
+		 		return true;
 		 	case R.id.viewSaved:
-				Toast.makeText(getApplicationContext(), "buka halaman sms", Toast.LENGTH_SHORT).show();
 				Intent i = new Intent(getApplicationContext(),SavedSMS.class);
 				startActivity(i);
 				return true;

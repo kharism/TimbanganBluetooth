@@ -52,15 +52,10 @@ public class DB {
 	}
 	public void saveSms(Sms i){
 		ContentValues values = new ContentValues();
-	    values.put("id", i.getId());
+	    if(i.getId()>0)
+		values.put("id", i.getId());
 	    values.put("value", i.getValue());
-	    Cursor c = database.query(true, "ibu", Ibu.ATTRIBUTES,i.getWhereValue(),null,null, null, null, null);
-	    if(c.getCount()==0){
-	    	database.insert("ibu", null, values);
-	    }
-	    else{
-	    	database.update("sms", values, i.getValue(), null);
-	    }
+	    this.save("sms", values);
 	}
 	public List<Sms> findAllSMS(){
 		List<Sms> comments = new ArrayList<Sms>();
